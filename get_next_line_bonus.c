@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ivar <ivar@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/12 10:25:58 by ivar              #+#    #+#             */
-/*   Updated: 2024/12/12 11:44:51 by ivar             ###   ########.fr       */
+/*   Created: 2024/12/12 10:25:45 by ivar              #+#    #+#             */
+/*   Updated: 2024/12/12 11:30:15 by ivar             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 #include <unistd.h>
 
 static char	*ft_free(char *buffer, char *buf)
@@ -85,13 +85,13 @@ static char	*read_file(int fd, char *result)
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
+	static char	*buffer[OPEN_MAX];
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	buffer = read_file(fd, buffer);
-	if (!buffer)
+	buffer[fd] = read_file(fd, buffer[fd]);
+	if (!buffer[fd])
 		return (NULL);
-	return (line = ft_line(buffer), buffer = ft_next(buffer), line);
+	return (line = ft_line(buffer[fd]), buffer[fd] = ft_next(buffer[fd]), line);
 }
